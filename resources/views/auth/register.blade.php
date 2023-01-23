@@ -30,7 +30,7 @@
         
         <div class="mt-4">
             <x-input-label for="phonenumber" :value="__('Phonenumber')" />
-            <x-text-input id="phonenumber" class="block mt-1 w-full" type="phonenumber" name="phonenumber" :value="old('phonenumber')" required />
+            <x-text-input id="phonenumber" class="block mt-1 w-full" type="tel" name="phonenumber" :value="old('phonenumber')" required />
             <x-input-error :messages="$errors->get('phonenumber')" class="mt-2" />
         </div>
 
