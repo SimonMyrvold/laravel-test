@@ -52,7 +52,12 @@
                         @endif
                         <td><input type="text" name="password" value="{{ $user->password }}"></td>
                         <td>{{ $user->created_at }}</td>
+                        @if (Auth::user()->role == 'admin')
                         <td><button type="submit">Submit changes</button></td>
+                        @elseif ($user->role != 'admin'){
+                        <td><button type="submit">Submit changes</button></td>
+                        }
+                        @endif
                     </form>
                     <form action="{{ route('profile.destroy', $user->id) }}" method="POST">
                         @csrf
@@ -68,29 +73,10 @@
       </table>
 
     @else
-        <body style="background-color: green">
         
-        {{ __("You're logged in!") }}
-        
-        {{ Auth::user()->name }}
-    
-        <!-- Authentication -->
-        <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <x-dropdown-link :href="route('logout')"
-                onclick="event.preventDefault();
-                this.closest('form').submit();">
-                {{ __('Log Out') }}
-            </x-dropdown-link>
-        </form>
-    
-        <a href="{{ route('administrate') }}">test</a>
-    
-        {{ Auth::user()->role }}
-    
-    
-        </body>
-        
+      <p>you don't have permission to access administrate</p>
+      <a href="{{ route('dashboard') }}">start</a>
+
     @endif
     
 @endif

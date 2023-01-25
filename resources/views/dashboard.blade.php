@@ -1,16 +1,18 @@
 @if (Auth::user()->role == 'user')
     <body style="background-color: green"> </body>
-
-@elseif (Auth::user()->role == 'poweruser')
+    
+    @elseif (Auth::user()->role == 'poweruser')
     <body style="background-color: blue"> </body>
-
-@else
+    <a href="{{ route('administrate') }}">administrate users</a>
+    
+    @else
     <body style="background-color: red"> </body>
+    <a href="{{ route('administrate') }}">administrate users</a>
 
 @endif
     {{ __("You're logged in!") }}
     
-    {{ Auth::user()->name }}
+    {{ Auth::user()->username }}
 
     <!-- Authentication -->
     <form method="POST" action="{{ route('logout') }}">
@@ -21,7 +23,3 @@
             {{ __('Log Out') }}
         </x-dropdown-link>
     </form>
-
-    <a href="{{ route('administrate') }}">administrate users</a>
-
-    {{ Auth::user()->role }}
