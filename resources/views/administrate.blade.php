@@ -25,9 +25,9 @@
             @foreach (DB::table('users')->get() as $user)
                 <tr>
 
-                    {{-- prints out all users that have a lower role_id than the logged in user --}}
+                    {{-- prints out all users that have a lower role_id than the logged in user and if it's yourself --}}
 
-                    @if (Auth::user()->role_id > $user->role_id)
+                    @if (Auth::user()->role_id > $user->role_id || Auth::user()->username == $user->username)
 
                     {{-- form to update user --}}
                         
@@ -61,6 +61,15 @@
                                     <option value="2">poweruser</option>
                                     <option value="3">admin</option>
                                 @endif
+                                @if ($user->role_id == '2' && Auth::user()->role_id == '2')
+                                <option value="2">poweruser</option>
+                                <option value="1">user</option>
+                                @endif
+                                @if ($user->role_id == '3' && Auth::user()->role_id == '3')
+                                    <option value="3">admin</option>
+                                    <option value="1">user</option>
+                                    <option value="2">poweruser</option>
+                                @endif
                             </select>
                         </td>
                         <td><input type="text" name="password" value="{{ $user->password }}"></td>
@@ -86,10 +95,10 @@
     @else
         
       <p>you don't have permission to access administrate</p>
+      
+      @endif
+      
       <a href="{{ route('dashboard') }}">start</a>
-
-    @endif
-    
 @endif
 
 
