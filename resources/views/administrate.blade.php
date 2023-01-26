@@ -1,4 +1,6 @@
 @if (Auth::check())
+
+    {{-- if user is logged in, check if user is admin or poweruser --}}
     
     @if (Auth::user()->role_id == '2' || Auth::user()->role_id == '3')
 
@@ -17,9 +19,17 @@
                 <th>created_at</th>
 
             </tr>
+
+            {{-- loop through all users and display them in a table --}}
+
             @foreach (DB::table('users')->get() as $user)
                 <tr>
+
+                    {{-- prints out all users that have a lower role_id than the logged in user --}}
+
                     @if (Auth::user()->role_id > $user->role_id)
+
+                    {{-- form to update user --}}
                         
                     <form action="{{ route('profile.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -31,6 +41,11 @@
                         <td><input type="text" name="email" value="{{ $user->email }}"></td>
                         <td><input type="text" name="phonenumber" value="{{ $user->phonenumber }}"></td>
                         <td>
+
+                            {{-- if user is user and logged in user is poweruser show user and poweruser as alternetives --}}
+                            {{-- if user is user and logged in user is admin show user, poweruser and admin as alternetives --}}
+                            {{-- if user is poweruser and logged in user is admin show user, poweruser and admin as alternetives --}}
+
                             <select name="role_id" id="role_id">
                                 @if ($user->role_id == '1' && Auth::user()->role_id == '2')
                                     <option value="1">user</option>
@@ -50,8 +65,13 @@
                         </td>
                         <td><input type="text" name="password" value="{{ $user->password }}"></td>
                         <td>{{ $user->created_at }}</td>
+
+                        {{-- submit button --}}
+
                         <td><button type="submit">update</button></td>
                     </form>
+
+                    {{-- form to delete user --}}
 
                     <form action="{{ route('profile.destroy', $user->id) }}" method="POST">
                         @csrf

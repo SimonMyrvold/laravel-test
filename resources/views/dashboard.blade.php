@@ -1,3 +1,5 @@
+{{-- Checks user role if higher then user the show administrate link --}}
+
 @if (Auth::user()->role_id == '1')
     <body style="background-color: green"> </body>
     
