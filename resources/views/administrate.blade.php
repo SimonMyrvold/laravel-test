@@ -1,6 +1,8 @@
 @if (Auth::check())
     
-    @if (Auth::user()->role == 'poweruser' || Auth::user()->role == 'admin')
+    @if (Auth::user()->role_id == '2' || Auth::user()->role_id == '3')
+
+
         
         <table>
             <tr>
@@ -17,6 +19,8 @@
             </tr>
             @foreach (DB::table('users')->get() as $user)
                 <tr>
+                    @if (Auth::user()->role_id > $user->role_id)
+                        
                     <form action="{{ route('profile.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PATCH')
@@ -26,50 +30,37 @@
                         <td><input type="text" name="lastname" value="{{ $user->lastname }}"></td>
                         <td><input type="text" name="email" value="{{ $user->email }}"></td>
                         <td><input type="text" name="phonenumber" value="{{ $user->phonenumber }}"></td>
-                        @if (Auth::user()->role == 'admin')
-                        <td><select name="role">
-                            <option value="{{ $user->role }}">{{ $user->role }}</option> 
-                        @if ($user->role != 'poweruser')
-                            <option value="poweruser">poweruser</option>
-                        @endif
-                        @if ($user->role != 'user')
-                            <option value="user">user</option>
-                        @endif
-                        @if ($user->role != 'admin')
-                            <option value="admin">admin</option>
-                        @endif
-                        </select></td>
-                        @elseif ($user->role != 'admin') {
-                            <td><select name="role"><option value="{{ $user->role }}">{{ $user->role }}</option> @if ($user->role != 'poweruser')
-                                <option value="poweruser">poweruser</option></select></td>
-                                @else {
-                                    <option value="user">user</option></select></td>
-                                }
-                                @endif 
-                        }
-                        @else
-                            <td><select name="role"><option value="admin">admin</option></select></td>
-                        @endif
+                        <td>
+                            <select name="role_id" id="role_id">
+                                @if ($user->role_id == '1' && Auth::user()->role_id == '2')
+                                    <option value="1">user</option>
+                                    <option value="2">poweruser</option>
+                                @endif
+                                @if ($user->role_id == '1' && Auth::user()->role_id == '3')
+                                    <option value="1">user</option>
+                                    <option value="2">poweruser</option>
+                                    <option value="3">admin</option>
+                                @endif
+                                @if ($user->role_id == '2' && Auth::user()->role_id == '3')
+                                    <option value="1">user</option>
+                                    <option value="2">poweruser</option>
+                                    <option value="3">admin</option>
+                                @endif
+                            </select>
+                        </td>
                         <td><input type="text" name="password" value="{{ $user->password }}"></td>
                         <td>{{ $user->created_at }}</td>
-                        @if (Auth::user()->role == 'admin')
-                        <td><button type="submit">Submit changes</button></td>
-                        @elseif ($user->role != 'admin'){
-                        <td><button type="submit">Submit changes</button></td>
-                        }
-                        @endif
+                        <td><button type="submit">update</button></td>
                     </form>
+
                     <form action="{{ route('profile.destroy', $user->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
-                        @if ($user->role != 'admin' && Auth::user()->role == 'admin')
-                        <td><button type="submit">Delete</button></td>
-                        @elseif ($user->role != 'admin' && $user->role != 'poweruser')
-                        <td><button type="submit">Delete</button></td>
-                        @endif
+                        <td><button type="submit">delete</button></td>
                     </form>
-                </tr>
-            @endforeach
+
+                    @endif
+                    @endforeach
       </table>
 
     @else

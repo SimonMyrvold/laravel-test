@@ -1,7 +1,7 @@
-@if (Auth::user()->role == 'user')
+@if (Auth::user()->role_id == '1')
     <body style="background-color: green"> </body>
     
-    @elseif (Auth::user()->role == 'poweruser')
+    @elseif (Auth::user()->role_id == '2')
     <body style="background-color: blue"> </body>
     <a href="{{ route('administrate') }}">administrate users</a>
     

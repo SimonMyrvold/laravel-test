@@ -22,9 +22,11 @@ return new class extends Migration
             $table->string('phonenumber')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('role')->default('user');
+            $table->foreignId('role_id')->default('1')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
+
+            $table->foreign('role_id')->references('id')->on('roles');
         });
     }
 

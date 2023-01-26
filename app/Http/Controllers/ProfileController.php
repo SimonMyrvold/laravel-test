@@ -33,7 +33,7 @@ class ProfileController extends Controller
             'lastname' => $request->lastname,
             'email' => $request->email,
             'phonenumber' => $request->phonenumber,
-            'role' => $request->role,
+            'role_id' => $request->role_id,
             'password' => $request->password
         ]);
 
